@@ -1,12 +1,12 @@
 import React from 'react';
 import {render, fireEvent, waitFor} from "@testing-library/react";
 import App from './App';
-import userEvent from '@testing-library/user-event';
-import {fetchShow as mockFetchShow} from './api/fetchShow';
+import {userEvent} from '@testing-library/user-event';
+import { fetchShow as mockFetchShow } from './api/fetchShow';
 
 jest.mock('./api/fetchShow');
 
-console.log(mockFetchShow);
+console.log("mocked function: ", mockFetchShow);
 
 const seasonThreeEpisodes= {
     data:{
@@ -182,4 +182,8 @@ const seasonThreeEpisodes= {
                 },
             }
 }
+
+test('Render Test', async () => {
+  mockFetchShow.mockResolvedValueOnce(seasonThreeEpisodes);
+});
 
