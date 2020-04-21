@@ -1,12 +1,10 @@
 import React from 'react';
-import {render, fireEvent, waitFor, getByText} from "@testing-library/react";
+import {render, fireEvent, waitFor, getByRole} from "@testing-library/react";
 import App from './App';
 import userEvent from '@testing-library/user-event';
 import { fetchShow as mockFetchShow } from './api/fetchShow';
 
 jest.mock('./api/fetchShow');
-
-console.log("mocked function: ", mockFetchShow);
 
 const seasonThreeEpisodes= {
     data:{
@@ -191,15 +189,20 @@ const seasonThreeEpisodes= {
 test('Render Test', async () => {
   mockFetchShow.mockResolvedValueOnce(seasonThreeEpisodes);
 
-  const {queryAllByTestId, queryByTestId} = render(<App/>);
+  const {queryAllByTestId, getByText, debug} = render(<App/>);
 
-  const button = queryByTestId(/season selection/i);
-
-  userEvent.selectOptions(button, getByText["season 1", "season 4"])
-
+  // const button = getByText(/Select a season/i);
   await waitFor(() => {
+    getByText(/Select a season/i);
 
   })
+  const button = getByText(/Select a season/i);
+  userEvent.click(button);
+  const press = getByText(/Season 3/i);
+  userEvent.click(press);
+  console.log("Button test: ", press);
+  debug();
 
+    expect(queryAllByTestId(/episodes/i)).toHaveLength(8);
 });
 
